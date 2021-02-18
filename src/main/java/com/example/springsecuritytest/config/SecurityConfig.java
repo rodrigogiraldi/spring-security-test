@@ -1,5 +1,6 @@
 package com.example.springsecuritytest.config;
 
+import com.example.springsecuritytest.service.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private CustomUserDetailService customUserDetailService;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -23,15 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.csrf().disable();
 	}
-	
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-		.withUser("rodrigo").password(passwordEncoder().encode("rodrigo")).roles("USER")
-		.and()
-		.withUser("admin").password(passwordEncoder().encode("admin")).roles("USER", "ADMIN");
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(customUserDetailService).passwordEncoder((new BCryptPasswordEncoder()));
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();

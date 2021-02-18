@@ -1,0 +1,2 @@
+insert into user (id, profile, username, password) values (1, 1, 'admin', '$2a$10$xla7uXKD/C9GRVp/fhBJ1.CZDQ2KLH4qm7kuDY08Dy9emH0dOWITe');
+insert into user (id, profile, username, password) values (2, 0, 'rodrigo', '$2a$10$1IHmElHHmfS9IMrElYB2hOFLj/D40tK.C4Nhn3LrmXbrIJHgF4p0K');
